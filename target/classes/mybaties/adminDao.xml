@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nanjingdaxue.denglu.dao.adminDao">
+    <resultMap id="admin" type="nanjingdaxue.denglu.bean.admin">
+        <result property="Id" column="admin_id"></result>
+        <result property="Name" column="admin_name"></result>
+        <result property="Account" column="admin_account"></result>
+        <result property="Password" column="admin_password"></result>
+        <result property="Role" column="admin_role"></result>
+    </resultMap>
+    <!-- 管理员登陆 -->
+      <select id="queryadmin" parameterType="String" resultMap="admin">
+         SELECT * FROM admin
+         WHERE admin_account=#{Account}AND admin_password=#{Password}
+      </select>
+    <!--新建管理员-->
+    <insert id="insertadmin" parameterType="nanjingdaxue.denglu.bean.admin">
+        INSERT INTO admin(admin_name,admin_account,admin_password,admin_role)
+                VALUES(#{Name},#{Account},#{Password},#{Role})
+    </insert>
+    <!--管理员创建新生-->
+    <insert id="insertStudent" parameterType="nanjingdaxue.denglu.bean.student">
+        INSERT INTO student(student_name,student_IdCard,student_enroll,student_department,student_role,student_image)
+        VALUES(#{name},#{IdCard},#{enroll},#{department},1,#{image})
+    </insert>
+    <!--获取新建管理员的姓名如何存在，责提示创建失败-->
+    <select id="selectAdminName" parameterType="String" resultMap="admin">
+       SELECT admin_account FROM admin WHERE admin_account=#{Account}
+    </select>
+    <!--获取所有管理员信息-->
+      <select id="getAllAdmin" resultMap="admin">
+          select * from admin
+      </select>
+     <!--更新管理员账户和密码-->
+       <update id="updateAdmin" parameterType="nanjingdaxue.denglu.bean.admin">
+           UPDATE admin
+           <set>
+               <if test="Account!=null">
+                   admin_account=#{Account}
+               </if>
+               <if test="Password!=null">
+                   admin_password=#{Password}
+               </if>
+           </set>
+           where admin_id=#{Id}
+       </update>
+
+</mapper>

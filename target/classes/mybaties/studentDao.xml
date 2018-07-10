@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nanjingdaxue.denglu.dao.studentDao">
+    <resultMap id="studentAll" type="nanjingdaxue.denglu.bean.student">
+        <result property="id" column="student_id"></result>
+        <result property="name" column="student_name"></result>
+        <result property="IdCard" column="student_IdCard"></result>
+        <result property="enroll" column="student_enroll"></result>
+        <result property="department" column="student_department"></result>
+        <result property="role" column="student_role"></result>
+        <result property="image" column="student_image"></result>
+    </resultMap>
+    <select id="querystudent" parameterType="String" resultMap="studentAll">
+            SELECT * FROM student
+             WHERE student_IdCard=#{IdCard}
+             AND student_enroll=#{enroll}
+    </select>
+</mapper>
