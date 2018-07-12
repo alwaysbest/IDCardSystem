@@ -16,7 +16,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../img/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="../img/ico/apple-touch-icon-57-precomposed.png">
 </head>
-<body >
+<body>
 <!--<h1>欢迎登录人脸识别系统</h1>-->
 <!--<a href="/admin/login" name="管理员登陆">管理员登录</a>-->
 <!--<a href="/student/stuLogin" name="学生登陆">学生登录</a>-->
@@ -49,8 +49,9 @@
                             <i class="fa fa-key"></i>
                         </div>
                     </div>
-                    <div class="form-bottom">
-                        <form role="form" id="adminform"action="/admin/addqueryadmin" method="post" class="login-form">
+                    <div class="form-bottom" >
+
+                        <form role="form" id="adminform" method="post" class="login-form" >
                             <div class="form-group">
                                 <label class="sr-only" for="admin">Username</label>
                                 <input type="text" name="account" placeholder="Username..." class="form-username form-control" id="admin"/>
@@ -59,7 +60,7 @@
                                 <label class="sr-only" for="adminpassword">Password</label>
                                 <input type="password" name="password" placeholder="Password..." class="form-password form-control" id="adminpassword">
                             </div>
-                            <button type="submit" id="adminSubmit" class="btn">Login</button>
+                            <button type="button" id="adminSubmit" class="btn">Login</button>
                         </form>
                     </div>
                 </div>
@@ -97,11 +98,11 @@
 
 
 <!-- Javascript -->
-<script src="../js/jquery-1.11.1.min.js"></script>
-<script src="../js/jquery-2.1.1.js"></script>
 
+<script src="../js/jquery-2.1.1.js"></script>
+<script src="../js/jquery-2.1.4.min.js"></script>
 <script src="../bootstrap/js/bootstrap.min.js"></script>
-<script src="../js/jquery.backstretch.min.js"></script>
+<script src="../js/jquery.backstretch.js"></script>
 <script src="../js/scripts.js"></script>
 <!--[if lt IE 10]>
 <script src="../js/placeholder.js"></script>
@@ -110,9 +111,38 @@
     $('#adminSubmit').click(function(){
         if($('#admin').val()==''){
         alert('用户名或密码不得为空');
+        }else{
+            var account=$('#admin').val();
+            var password = $('#adminpassword').val();
+            $.ajax({
+                type:"post",
+                url:"/admin/addqueryadmin",
+                data:{"account":account,"password":password},
+                async: false,
+                success:function(data){
+                    if(data==0){
+
+                        window.location.href='/admin/adminsave1';
+                        return false;
+                    }else{
+                        alert("用户名或密码错误");
+                        window.location.reload();
+
+                    }
+                },error:function(XMLHttpRequest, textStatus, errorThrown) {
+	                alert(XMLHttpRequest.status);
+	                alert(XMLHttpRequest.readyState);
+	                alert(textStatus);
+			 }
+
+            });
         }
 
     });
+
+
+
+
 
 </script>
 

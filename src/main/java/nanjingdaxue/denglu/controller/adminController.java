@@ -1,13 +1,17 @@
 package nanjingdaxue.denglu.controller;
 
+import com.sun.tools.internal.ws.processor.model.Response;
 import nanjingdaxue.denglu.bean.admin;
 import nanjingdaxue.denglu.service.adminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import sun.jvm.hotspot.debugger.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,24 +32,22 @@ private adminService adminService;
 
     @RequestMapping(value = "/addqueryadmin")
     //用户登陆
-    public String queryadmin(HttpServletRequest request)throws Exception{
+    @ResponseBody
+    public int queryadmin(@RequestParam("account") String account,@RequestParam("password") String password)throws Exception{
 
-                          String account = request.getParameter("account");
-                          String password = request.getParameter("password");
+
 
            admin admin = adminService.queryadmin(account, password);
-           String res ="";
            if(admin!=null){
-                   request.getSession().setAttribute("admin",admin);
-                   res="/index";
+//                   request.getSession().setAttribute("admin",admin);
+                    return 0;
 
            }else {
-               System.out.print("用户可能账户或者密码输入错误，也有可能不存在账户！！！");
-                 res="/xnjyl";
+               return 1;
 
            }
-           System.out.print("res:"+res);
-           return  res;
+
+
 
     }
 
@@ -53,6 +55,7 @@ private adminService adminService;
     public String saveadmin1(){
         return "adminsave1";
     }
+
 
      //添加管理员
     @RequestMapping(value = "/addAdmin",method = RequestMethod.POST)
@@ -62,6 +65,7 @@ private adminService adminService;
             String  account =request.getParameter("account");
               ad = adminService.selectAdminName(account);
             if(ad!=null){
+
                     System.out.print("存在重复的账户");
             }else {
 
@@ -80,7 +84,7 @@ private adminService adminService;
                     System.out.print("密码输入错误！····");
                 }
             }
-        return "index" ;
+        return "redirect:/admin/adminsave1" ;
     }
     // 获取所有管理员
     @RequestMapping(value = "/allAdmin",method = RequestMethod.GET)
@@ -95,6 +99,10 @@ private adminService adminService;
                      map.put("admins","暂无数据请添加信息");
                  }
         return map;
+    }
+    @RequestMapping(value = "/checkAdmin")
+    public String chackAdmin(){
+        return "checkAdmin";
     }
 
     // 管理员修改账户或者密码

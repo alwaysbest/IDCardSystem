@@ -104,7 +104,7 @@ public class FileController {
     @RequestMapping(value = "/downloadImage",method = RequestMethod.GET)
     public String downloadImage(String imageName,HttpServletRequest request, HttpServletResponse response) {
         //String fileName = "123.JPG";
-        String filePath = "E://test//";
+        String filePath = "/Users/liuyin/Downloads/image";
         loggin.debug("the imageName is : "+imageName);
         String fileUrl = filePath+imageName;
         if (fileUrl != null) {
